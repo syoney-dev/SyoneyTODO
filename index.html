@@ -35,10 +35,13 @@
       <h2 id="currentListName">-</h2>
       <div class="ledger-head-actions">
         <span id="taskCount" class="task-count"></span>
+        <button id="shareListBtn" class="text-btn" title="このリストを共有">共有</button>
         <button id="renameListBtn" class="text-btn" title="リスト名を変更">編集</button>
         <button id="deleteListBtn" class="text-btn danger" title="リストを削除">削除</button>
       </div>
     </div>
+
+    <p id="statusMsg" class="status-msg" hidden></p>
 
     <ul id="taskList" class="task-list"></ul>
 
@@ -97,6 +100,6 @@
   </div>
 </div>
 
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>

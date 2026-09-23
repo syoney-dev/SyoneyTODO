@@ -251,6 +251,12 @@ body {
 .task-row.done .task-dates { color: var(--paper-dim); }
 .task-dates.overdue { color: var(--red); }
 
+.status-msg {
+  margin: 12px 0;
+  font-size: 13px;
+  color: var(--paper-dim);
+}
+
 .empty-state {
   color: var(--paper-dim);
   font-size: 14px;

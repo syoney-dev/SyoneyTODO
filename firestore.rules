@@ -1,0 +1,49 @@
+rules_version = '2';
+
+// SyoneyTODO のセキュリティルール
+// - 利用者はアプリ側で自動的に匿名ログインする(ログイン画面なし)
+// - リスト ID を知っている人だけがそのリストを読み書きできる(リスト一覧の取得は禁止)
+// Firebase コンソール > Firestore > ルール に貼り付けて「公開」する。
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isShortString(v, maxLen) {
+      return v is string && v.size() <= maxLen;
+    }
+
+    function validList(d) {
+      return d.keys().hasOnly(['name', 'createdAt'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 80
+        && d.createdAt is number;
+    }
+
+    function validTask(d) {
+      return d.keys().hasOnly(['name', 'detail', 'dateFrom', 'dateTo', 'done', 'createdAt'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 80
+        && isShortString(d.detail, 2000)
+        && isShortString(d.dateFrom, 10)
+        && isShortString(d.dateTo, 10)
+        && d.done is bool
+        && d.createdAt is number;
+    }
+
+    match /lists/{listId} {
+      // get は ID 指定の読み込みだけ。list(一覧取得)は許可しないので他人のリストは探せない。
+      allow get: if signedIn();
+      allow create, update: if signedIn() && validList(request.resource.data);
+      allow delete: if signedIn();
+
+      match /tasks/{taskId} {
+        allow read: if signedIn();
+        allow create, update: if signedIn()
+          && existsAfter(/databases/$(database)/documents/lists/$(listId))
+          && validTask(request.resource.data);
+        allow delete: if signedIn();
+      }
+    }
+  }
+}
