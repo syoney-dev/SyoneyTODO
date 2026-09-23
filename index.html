@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>SyoneyTODO</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B2430">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SyoneyTODO">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans+JP:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <header class="topbar">
+    <h1 class="brand"><span class="brand-mark">Syoney</span><span class="brand-rest">TODO</span></h1>
+    <button id="newListBtn" class="icon-btn" title="新しいリストを作成" aria-label="新しいリストを作成">＋</button>
+  </header>
+
+  <nav id="listTabs" class="list-tabs" aria-label="TODOリスト一覧"></nav>
+
+  <main class="ledger">
+    <div class="ledger-head">
+      <h2 id="currentListName">-</h2>
+      <div class="ledger-head-actions">
+        <span id="taskCount" class="task-count"></span>
+        <button id="renameListBtn" class="text-btn" title="リスト名を変更">編集</button>
+        <button id="deleteListBtn" class="text-btn danger" title="リストを削除">削除</button>
+      </div>
+    </div>
+
+    <ul id="taskList" class="task-list"></ul>
+
+    <p id="emptyState" class="empty-state" hidden>
+      このリストにはまだタスクがありません。<br>下の「＋ タスクを追加」から書き込みましょう。
+    </p>
+  </main>
+
+  <button id="addTaskBtn" class="fab">＋ タスクを追加</button>
+</div>
+
+<!-- タスク編集シート -->
+<div id="sheetOverlay" class="sheet-overlay" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <h3 id="sheetTitle">タスクを追加</h3>
+      <button id="closeSheetBtn" class="icon-btn" aria-label="閉じる">✕</button>
+    </div>
+
+    <form id="taskForm">
+      <label class="field">
+        <span class="field-label">タスク名</span>
+        <input type="text" id="taskName" placeholder="例: 牛乳を買う" required maxlength="80">
+      </label>
+
+      <label class="field">
+        <span class="field-label">詳細</span>
+        <textarea id="taskDetail" rows="3" placeholder="メモや詳細(任意)"></textarea>
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">開始日</span>
+          <input type="date" id="taskFrom">
+        </label>
+        <label class="field">
+          <span class="field-label">期限日</span>
+          <input type="date" id="taskTo">
+        </label>
+      </div>
+
+      <label class="field checkbox-field">
+        <input type="checkbox" id="taskDone">
+        <span class="field-label">完了にする</span>
+      </label>
+
+      <div class="sheet-actions">
+        <button type="button" id="deleteTaskBtn" class="text-btn danger" hidden>このタスクを削除</button>
+        <div class="sheet-actions-right">
+          <button type="button" id="cancelTaskBtn" class="ghost-btn">キャンセル</button>
+          <button type="submit" class="primary-btn">保存</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

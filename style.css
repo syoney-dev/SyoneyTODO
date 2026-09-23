@@ -1,0 +1,428 @@
+:root {
+  --navy-900: #161D27;
+  --navy-800: #1B2430;
+  --navy-700: #232D3D;
+  --navy-600: #2C3849;
+  --rule: #3A4757;
+
+  --paper: #ECE6D6;
+  --paper-dim: #8C93A3;
+
+  --gold: #D9A441;
+  --gold-dim: #B8863A;
+  --sage: #7A9471;
+  --red: #C0594A;
+
+  --serif: "Fraunces", ui-serif, Georgia, serif;
+  --sans: "IBM Plex Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+/* hidden 属性を display 指定より優先させる */
+[hidden] { display: none !important; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--navy-900);
+  color: var(--paper);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 18px 100px;
+}
+
+/* ---------- Header ---------- */
+
+.topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 22px 2px 14px;
+}
+
+.brand {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: 0.2px;
+}
+.brand-mark { color: var(--gold); font-style: italic; font-weight: 500; }
+.brand-rest { color: var(--paper); }
+
+.icon-btn {
+  background: var(--navy-700);
+  border: 1px solid var(--rule);
+  color: var(--paper);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.icon-btn:hover { background: var(--navy-600); }
+.icon-btn:active { transform: scale(0.96); }
+
+/* ---------- List tabs ---------- */
+
+.list-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 14px;
+  scrollbar-width: none;
+}
+.list-tabs::-webkit-scrollbar { display: none; }
+
+.list-tab {
+  flex: 0 0 auto;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: var(--navy-800);
+  color: var(--paper-dim);
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.list-tab.active {
+  background: var(--navy-700);
+  border-color: var(--gold);
+  color: var(--paper);
+}
+
+.list-tab-empty {
+  color: var(--paper-dim);
+  font-size: 14px;
+  padding: 9px 4px;
+}
+
+/* ---------- Ledger (main content) ---------- */
+
+.ledger {
+  flex: 1;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+}
+
+.ledger-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ledger-head h2 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 21px;
+  margin: 0;
+  color: var(--paper);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ledger-head-actions {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex: 0 0 auto;
+}
+
+.task-count {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--paper-dim);
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  color: var(--paper-dim);
+  font-size: 13.5px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.text-btn:hover { color: var(--paper); }
+.text-btn.danger:hover { color: var(--red); }
+
+/* ---------- Task list ---------- */
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+}
+.task-row:last-child { border-bottom: none; }
+
+.task-check {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 5px;
+  border: 1.6px solid var(--gold);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+.task-check svg {
+  width: 13px;
+  height: 13px;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.15s ease, transform 0.18s ease;
+}
+.task-row.done .task-check {
+  background: var(--sage);
+  border-color: var(--sage);
+}
+.task-row.done .task-check svg { opacity: 1; transform: scale(1); }
+
+.task-body { flex: 1; min-width: 0; }
+
+.task-name {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--paper);
+  overflow-wrap: anywhere;
+}
+.task-row.done .task-name {
+  color: var(--paper-dim);
+  text-decoration: line-through;
+  text-decoration-color: var(--paper-dim);
+}
+
+.task-detail {
+  font-size: 13px;
+  color: var(--paper-dim);
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-dates {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--gold-dim);
+  margin-top: 5px;
+  letter-spacing: 0.2px;
+}
+.task-row.done .task-dates { color: var(--paper-dim); }
+.task-dates.overdue { color: var(--red); }
+
+.empty-state {
+  color: var(--paper-dim);
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+  padding: 40px 10px;
+}
+
+/* ---------- Floating action button ---------- */
+
+.fab {
+  position: fixed;
+  left: 18px;
+  right: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  max-width: 604px;
+  margin: 0 auto;
+  background: var(--gold);
+  color: var(--navy-900);
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 15.5px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.fab:active { transform: scale(0.985); }
+
+/* ---------- Bottom sheet ---------- */
+
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11,15,20,0.55);
+  display: flex;
+  align-items: flex-end;
+  z-index: 50;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--navy-800);
+  border: 1px solid var(--rule);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  padding: 10px 20px calc(22px + env(safe-area-inset-bottom, 0px));
+  max-height: 88vh;
+  overflow-y: auto;
+  animation: sheet-up 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--rule);
+  border-radius: 4px;
+  margin: 6px auto 10px;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sheet-header h3 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0;
+}
+
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+.field-label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--paper-dim);
+  margin-bottom: 6px;
+}
+
+.field input[type="text"],
+.field input[type="date"],
+.field textarea {
+  width: 100%;
+  background: var(--navy-700);
+  border: 1px solid var(--rule);
+  color: var(--paper);
+  border-radius: 10px;
+  padding: 11px 12px;
+  font-size: 15px;
+  font-family: var(--sans);
+  resize: vertical;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.field-row {
+  display: flex;
+  gap: 12px;
+}
+.field-row .field { flex: 1; }
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.checkbox-field .field-label { margin: 0; }
+.checkbox-field input { width: 18px; height: 18px; accent-color: var(--sage); }
+
+.sheet-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  gap: 10px;
+}
+.sheet-actions-right {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.ghost-btn {
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--paper);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: var(--gold);
+  color: var(--navy-900);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.primary-btn:active { transform: scale(0.98); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .sheet { animation: none; }
+  .task-check svg { transition: none; }
+}
+
+/* ---------- Focus visibility ---------- */
+button:focus-visible,
+.task-check:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
